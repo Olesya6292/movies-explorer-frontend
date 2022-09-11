@@ -1,0 +1,27 @@
+.movies__btn-next {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 1.25;
+    width: 90%;
+    height: 36px;
+    border: none;
+    background: #f9f9f9;
+    border-radius: 6px;
+    cursor: pointer;
+    opacity: 1;
+    transition: opacity 0.8s linear;
+  }
+  
+  .movies__btn-next:hover {
+    opacity: 0.8;
+  }
+
+  @media screen and (max-width: 320px) {
+    .movies__btn-next {
+      width: 95%;
+    }
+  }
