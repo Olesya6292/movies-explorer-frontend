@@ -11,6 +11,8 @@
   mix-blend-mode: normal;
 }
 .portfolio__list {
+  display: flex;
+  flex-direction: column;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -19,9 +21,7 @@
   letter-spacing: -0.04em;
   font-size: 30px;
   line-height: 1.67;
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  
   padding-bottom: 15px;
   border-bottom: 1px solid #e8e8e8;
 }
@@ -30,8 +30,20 @@
   border-bottom: none;
 }
 .portfolio__item-name {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
   margin: 20px 0 0 0;
+  text-decoration: none;
+  color: #000;
+  opacity: 1;
+  transition: opacity 0.8s linear;
 }
+
+.portfolio__item-name:hover {
+  opacity: 0.7;
+}
+
 .portfolio__item-link {
   text-decoration: none;
   font-size: 30px;

@@ -13,18 +13,20 @@ function Login() {
         </Link>
         <h2 className='login__title'>Рады видеть!</h2>
         <form className='login__form'>
+        <label className='login__label'>E-mail</label>
           <input
             className='login__input'
             type='email'
             name='email'
-            placeholder='E-mail'
+            placeholder=''
             required
           ></input>
+          <label className='login__label'>Пароль</label>
           <input
             className='login__input'
             type='password'
             name='password'
-            placeholder='Пароль'
+            placeholder=''
             required
           ></input>
           <button className='login__button' type='submit'>

@@ -13,27 +13,30 @@ function Register() {
         </Link>
         <h2 className='register__title'>Добро пожаловать!</h2>
         <form className='register__form'>
+          <label className='register__label'>Имя</label>
           <input
             className='register__input'
             type='text'
             name='name'
-            placeholder='Имя'
+            placeholder=''
             required
             minLength={2}
             maxLength={30}
           ></input>
+          <label className='register__label'>E-mail</label>
           <input
             className='register__input'
             type='email'
             name='email'
-            placeholder='E-mail'
+            placeholder=''
             required
           ></input>
+          <label className='register__label'>Пароль</label>
           <input
             className='register__input'
             type='password'
             name='password'
-            placeholder='Пароль'
+            placeholder=''
             required
           ></input>
           <button className='register__button-reg' type='submit'>

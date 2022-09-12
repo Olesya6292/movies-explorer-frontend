@@ -76,6 +76,7 @@
 }
 @media screen and (max-width:680px){
     .tech {
+      background: #fff;
       padding: 70px 18px;
     }
     .content__title {
