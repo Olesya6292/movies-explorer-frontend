@@ -1,0 +1,151 @@
+.content__title {
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 1.23;
+  margin: 0;
+  padding-bottom: 23px;
+  border-bottom: 1px solid rgba(84, 84, 84, 0.75);
+  letter-spacing: -0.04em;
+}
+
+.student {
+  padding: 110px 70px 100px 70px;
+}
+
+.student__content {
+  padding-top: 66px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.student__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  max-width: 600px;
+}
+.student__name {
+  font-weight: normal;
+  font-size: 50px;
+  line-height: 1.16;
+  letter-spacing: -0.04em;
+  padding-bottom: 18px;
+  margin: 0;
+}
+.student__profession {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 1.11;
+  padding-bottom: 26px;
+  margin: 0;
+}
+.student__about {
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 22px;
+  mix-blend-mode: normal;
+  margin: 0;
+  padding-bottom: 99px;
+}
+.student__contacts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.student__contact {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 1.21;
+  text-decoration: none;
+  color: #000;
+  opacity: 1;
+  transition: opacity 0.8s linear;
+}
+
+.student__contact:hover {
+  opacity: 0.7;
+}
+
+.student__photo {
+  width: 270px;
+  height: 327px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+@media screen and (max-width: 1060px) {
+  .student__about {
+    max-width: 500px;
+  }
+}
+@media screen and (max-width: 898px) {
+  .student {
+    padding: 90px 50px;
+  }
+  .student__info {
+    max-width: 364px;
+  }
+  .student__photo {
+    width: 255px;
+    height: 307px;
+  }
+  .student__name {
+    font-size: 40px;
+    line-height: 1;
+    padding-bottom: 16px;
+  }
+  .student__profession {
+    font-size: 12px;
+    line-height: 1.5;
+    padding-bottom: 20px;
+  }
+  .student__about {
+    font-size: 12px;
+    line-height: 1.5;
+    padding-right: 20px;
+  }
+}
+@media screen and (max-width: 680px) {
+  .student {
+    padding: 70px 14px;
+  }
+  .content__title {
+    font-size: 18px;
+    line-height: 1.22;
+    padding-bottom: 28px;
+  }
+  .student__content {
+    padding-top: 60px;
+    flex-direction: column;
+  }
+  .student__photo {
+    width: 292px;
+    height: 352px;
+    order: -1;
+    margin-bottom: 40px;
+  }
+  .student__name {
+    font-size: 30px;
+    line-height: 1.2;
+    padding-bottom: 20px;
+  }
+  .student__profession {
+    font-size: 11px;
+    line-height: 1.45;
+    padding-bottom: 16px;
+  }
+  .student__about {
+    font-size: 11px;
+    line-height: 1.45;
+    padding-bottom: 40px;
+  }
+}
