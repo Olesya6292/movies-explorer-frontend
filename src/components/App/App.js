@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+//import { useEffect, useState } from 'react';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
@@ -14,10 +14,10 @@ import SavedMovies from '../SavedMovies/SavedMovies';
 import './App.css';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({});
+  //const [currentUser, setCurrentUser] = useState({});
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
+    <CurrentUserContext.Provider value={''}>
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/movies' element={<ProtectedRoute component={Movies} />} />

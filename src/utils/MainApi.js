@@ -10,7 +10,7 @@ export const getUserInfo = () => {
   }).then(handleResponse);
 };
 
-export const updateUserInfo = ({ name, email }) => {
+export const updateUserInfo = (name, email) => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'PATCH',
     headers: {

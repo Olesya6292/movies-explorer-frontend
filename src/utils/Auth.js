@@ -1,7 +1,7 @@
 import { BASE_URL } from "./constants";
 import { handleResponse } from "./handleResponse";
 
-export const register = ({ email, password, name }) => {
+export const register = (name, email, password) => {
     return fetch(`${BASE_URL}/signup`, {
       method: 'POST',
       headers: {
@@ -12,7 +12,7 @@ export const register = ({ email, password, name }) => {
     .then(handleResponse)
   };
   
-  export const login = ({ email, password }) => {
+  export const login = (email, password) => {
     return fetch(`${BASE_URL}/signin`, {
       method: 'POST',
       headers: {
