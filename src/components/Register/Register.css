@@ -102,6 +102,11 @@
   visibility: visible;
   color: #ff3055;
 }
+.register__message_type_success{
+  visibility: visible;
+  color: #3ddc84;
+  font-weight: 500;
+}
 .register__button-reg {
   margin-top: 152px;
   min-height: 45px;

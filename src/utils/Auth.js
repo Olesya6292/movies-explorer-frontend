@@ -1,5 +1,5 @@
 import { BASE_URL } from "./constants";
-import { handleResponse } from "./handleResponse";
+import handleResponse from "./handleResponse";
 
 export const register = (name, email, password) => {
     return fetch(`${BASE_URL}/signup`, {

@@ -79,6 +79,7 @@
 .profile__form-input-error_active {
   opacity: 1;
 }
+
 .profile__form-message {
   font-size: 11px;
   font-weight: 400;
@@ -86,45 +87,27 @@
   margin: 0 0 20px;
   visibility: hidden;
 }
-
 .profile__form-message_type_success {
-  position: absolute;
-  bottom: -40px;
-  right: 0;
-  left: 0;
   text-align: center;
   visibility: visible;
   color: #3ddc84;
   font-weight: 500;
-  margin: 20px 0 0;
 }
-
-.profile__form-message_type_error {
-  visibility: visible;
-  color: #ff3055;
-}
-
 .profile__form-footer {
   padding-top: 203px;
-  display: none;
-
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: 16px;
 }
-.profile__form-footer_enable {
-  display: flex;
-}
+
 .profile__form-save {
-  display: none;
+  display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
 }
 
-.profile__form-save_enable {
-  display: flex;
-}
 .profile__save-button {
   width: 100%;
   margin: 0;
@@ -162,6 +145,10 @@
   line-height: 13px;
   margin: 0 0 20px;
   visibility: hidden;
+}
+.profile__message_type_error {
+  visibility: visible;
+  color: #ff3055;
 }
 .profile__button {
   font-size: 13px;

@@ -1,11 +1,12 @@
 import { BASE_URL } from './constants';
-import { handleResponse } from './handleResponse';
+import handleResponse from './handleResponse';
 
 export const getUserInfo = () => {
   return fetch(`${BASE_URL}/users/me`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
   }).then(handleResponse);
 };
@@ -15,7 +16,7 @@ export const updateUserInfo = (name, email) => {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      'authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify({ name, email }),
   }).then(handleResponse);
@@ -26,7 +27,7 @@ export const getSavedMovies = () => {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
-      'authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
   }).then(handleResponse);
 };
@@ -36,7 +37,7 @@ export const saveMovie = (movie) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
     body: JSON.stringify(movie),
   }).then(handleResponse);
@@ -47,7 +48,7 @@ export const deleteMovie = (movieId) => {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
-      'authorization': `Bearer ${localStorage.getItem('jwt')}`,
+      'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
   }).then(handleResponse);
 };

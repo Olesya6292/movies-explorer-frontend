@@ -6,7 +6,7 @@ import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
 import './Register.css';
 
-function Register({ onRegister, errorMessage }) {
+function Register({ onRegister, errorMessage, successMessage }) {
   
   const { values, handleChange, errors, isValid, resetForm } =
     useFormAndValidation();
@@ -94,6 +94,13 @@ function Register({ onRegister, errorMessage }) {
             }`}
           >
             {errorMessage}
+          </span>
+          <span
+            className={`register__message ${
+              successMessage && 'register__message_type_success'
+            }`}
+          >
+            {successMessage}
           </span>
           <button
             className={`register__button-reg ${

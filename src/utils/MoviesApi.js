@@ -1,5 +1,5 @@
 import { BEATFILM_URL } from './constants';
-import { handleResponse } from './handleResponse'
+import handleResponse from './handleResponse'
 
 
 export const getAllMovies = () => {

@@ -19,6 +19,18 @@
   border: none;
   padding: 15px 22px;
 }
+
+.form-search__input-error{
+  font-size: 10px;
+  line-height: 1.2;
+  color: #ff3055;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  opacity: 0;
+}
+.form-search__input-error_active{
+  opacity: 1;
+}
 .form-search__submit {
   cursor: pointer;
   font-weight: 500;

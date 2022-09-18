@@ -1,27 +1,28 @@
 import React from 'react';
-import { useState } from 'react';
-import film from '../../image/pic__COLOR_pic.jpg'
 import './MoviesCard.css';
 
-function MoviesCard({ isSavedMovies }) {
+function MoviesCard({ movie, isSaved, onClickLike, onClickDelete, isLiked }) {
 
-  const [isActive, setIsActive] = useState(false);
-
-  function onClickHandler(){
-    setIsActive(!isActive);
-  };
-
-  const moviesButtonClassName = `${isSavedMovies ? 'movie__delete-button' : isActive ? 'movie__like-button movie__like-button_active' : 'movie__like-button '}`;
+  const moviesButtonClassName = `movie__like-button ${isLiked &&'movie__like-button_active'}`;
+  const getFilmDuration = (movie) => `${Math.floor(movie.duration / 60) === 0}` ? `${movie.duration % 60}м` : `${Math.floor(movie.duration / 60)}ч ${movie.duration % 60}м`;
+  
   return (
     <li className='movie'>
       <div className='movie__info'>
         <div className='movie__info-section'>
-          <h4 className='movie__title'>33 слова о дизайне</h4>
-          <p className='movie__duration'>1ч 47м</p>
+          <h4 className='movie__title'>{movie.nameRu}</h4>
+          <p className='movie__duration'>{getFilmDuration(movie)}</p>
         </div>
-        <button className={moviesButtonClassName} onClick={onClickHandler}></button>
+        {isSaved ? (
+        <button className={moviesButtonClassName} onClick={onClickLike}></button>) :
+        (
+          <button className='movie__delete-button' onClick={onClickDelete}></button>
+        )
+        }
       </div>
-      <img src={film} className='movie__image' alt='Промо'/>
+      <a className='movie__link' href={movie.trailer || movie.trailerLink} target='_blank' rel='noreferrer'>
+      <img src={`https://api.nomoreparties.co${movie.image.url}`} className='movie__image' alt='Промо'/>
+      </a>
     </li>
   );
 }
