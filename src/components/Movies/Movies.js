@@ -16,9 +16,7 @@ function Movies() {
   );
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [isSaved, setIsSaved] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
-  const [isLiked, setIsLiked] = useState(false);
 
   useEffect(() => {
     setSearchResult(searchResult);
@@ -53,8 +51,7 @@ function Movies() {
   function filterMovies(data, searchRequest, checked) {
     function isFilter(movie) {
       if (
-        (movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase()) ||
-          movie.nameEN.toLowerCase().includes(searchRequest.toLowerCase())) &&
+        movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase()) &&
         ((checked && movie.duration <= 40) || !checked)
       ) {
         return true;
@@ -79,8 +76,8 @@ function Movies() {
 
   function setSearch() {
     return {
-      searchRequest: localStorage.getItem('searchResult') || '',
-      checked: localStorage.getItem('searchResult') === 'true' || false,
+      searchRequest: localStorage.getItem('searchRequest') || '',
+      checked: localStorage.getItem('checked') === true || false,
     };
   }
 
@@ -93,34 +90,36 @@ function Movies() {
       })
       .catch((err) => console.log(err));
   }
+  function handleMovieClick(movie) {
+    const isSaved = savedMovies.some(
+      (savedMovie) => savedMovie.movieId === movie.movieId,
+    );
+    if (!isSaved) {
+      const savedMovie = savedMovies.find(
+        (savedMovie) => savedMovie.movieId === movie.movieId,
+      );
+      handleClickAddMovie(savedMovie);
+    } else {
+      handleClickDeleteMovie(movie);
+    }
+  }
 
-  function handleClickLike(searchResult) {
+  function handleClickAddMovie(movie) {
     mainApi
-      .saveMovie(searchResult)
+      .saveMovie(movie)
       .then(
-        setIsLiked(true),
-        setIsSaved(true),
-        (newMovie) => setSavedMovies([newMovie, ...setSavedMovies])
+        (newMovie) => setSavedMovies([...savedMovies, newMovie])
       )
       .catch((err) => console.log(err));
   }
 
-  function handleClickDelete(searchResult) {
-    const savedMovie = savedMovies.find(
-      (item) => item.movieId === searchResult.id || item.movieId === searchResult.movieId
-    );
+  function handleClickDeleteMovie(movie) {
     mainApi
-      .deleteMovie(savedMovie._id)
-      .then(() => {
-        const newMoviesList = savedMovies.filter((m) => {
-          if (searchResult.id === m.movieId || searchResult.movieId === m.movieId) {
-            return false;
-          } else {
-            return true;
-          }
-        });
-        setSavedMovies(newMoviesList);
-      })
+      .deleteMovie(movie._id)
+      .then(() =>
+        //movie.filter((savedMovie) => savedMovie._id !== movie._id),
+        setSavedMovies((state) => state.filter((savedMovie) => savedMovie._id !== movie._id))
+      )
       .catch((err) => console.log(err));
   }
 
@@ -135,15 +134,12 @@ function Movies() {
         {errorMessage}
         <MoviesCardList
           movies={searchResult}
-          isSaved={isSaved}
-          onClickLike={handleClickLike}
-          onClickDelete={handleClickDelete}
-          isLiked={isLiked}
+          savedMovies={savedMovies}
+          onClick={handleMovieClick}
         />
         <button
           type='button'
           className='movies__btn-next'
-          
         >
           Ещё
         </button>

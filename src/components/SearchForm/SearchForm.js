@@ -19,10 +19,10 @@ function SearchForm({ onSearchSubmit, setSearch }) {
     setSearchRequest(e.target.value);
   }
   
-  function handleCheckedChange(e) {
-    setChecked(e.target.checked);
+  function handleCheckedChange(value) {
+    setChecked(value);
     if (localStorage.getItem("searchResult")) {
-      onSearchSubmit(searchRequest, !checked);
+      onSearchSubmit(searchRequest, value);
     }
   }
 
@@ -58,7 +58,7 @@ function SearchForm({ onSearchSubmit, setSearch }) {
             Найти
           </button>
         </div>
-        <FilterCheckbox checked={checked} onChange={handleCheckedChange}/>
+        <FilterCheckbox onChange={handleCheckedChange}/>
         <span
             className={`form-search__input-error ${
               errorMessage && 'form-search__input-error_active'

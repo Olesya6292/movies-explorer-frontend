@@ -4,11 +4,15 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 
 export default function MoviesCardList({
   movies,
-  isSaved,
-  onClickLike,
-  onClickDelete,
-  isLiked,
+  onClick,
+  isSaved = true,
+  savedMovies,
 }) {
+
+  function isMovieSave(movie) {
+    return savedMovies.some((savedMovie) => savedMovie.movieId === movie.movieId);
+  }
+
   return (
     <section className='movies' aria-label='Фильмы'>
       <ul className='movies__list'>
@@ -17,9 +21,8 @@ export default function MoviesCardList({
           key={movie.id || movie.movieId}
           movie={movie}
           isSaved={isSaved}
-          onClickLike={onClickLike}
-          onClickDelete={onClickDelete}
-          isLiked={isLiked}
+          onClick={onClick}
+          isLiked={isMovieSave(movie)}
         />))}
       </ul>
     </section>
