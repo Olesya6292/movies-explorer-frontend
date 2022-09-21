@@ -1,11 +1,22 @@
 import React from 'react';
+import { getFilmDuration } from '../../utils/movieDuration';
+import { MOVIE_BASE_API } from '../../utils/constants';
 import './MoviesCard.css';
 
-function MoviesCard({ movie, isSaved = true, onClick, isLiked }) {
+function MoviesCard({ movie, isSavedMovie = false, onClickDeleteMovie, onClickAddMovie, savedMovies }) {
+    
+  let isSaved = false;
+  let savedId;
+  isSaved = savedMovies.some((item) => {
+    if (item.movieId === movie.movieId) {
+      savedId = item._id;
+      return true;
+    }
+    return false;
+  });
 
-  const moviesButtonClassName = `movie__like-button ${isLiked &&'movie__like-button_active'}`;
-  const getFilmDuration = (movie) => `${Math.floor(movie.duration / 60) === 0}` ? `${movie.duration % 60}м` : `${Math.floor(movie.duration / 60)}ч ${movie.duration % 60}м`;
-  
+  const moviesButtonClassName = (isSavedMovie ? 'movie__delete-button' : isSaved ? 'movie__like-button_active' : 'movie__like-button');
+
   return (
     <li className='movie'>
       <div className='movie__info'>
@@ -13,15 +24,14 @@ function MoviesCard({ movie, isSaved = true, onClick, isLiked }) {
           <h4 className='movie__title'>{movie.nameRU}</h4>
           <p className='movie__duration'>{getFilmDuration(movie)}</p>
         </div>
-        {isSaved ? (
-        <button className={moviesButtonClassName} onClick={onClick}></button>) :
-        (
-          <button className='movie__delete-button' onClick={onClick}></button>
-        )
-        }
+        <button
+          className={moviesButtonClassName} onClick={() => {
+            isSaved ? onClickDeleteMovie(movie._id ? movie._id  : savedId) : onClickAddMovie(movie)
+          }}>
+        </button>
       </div>
-      <a className='movie__link' href={movie.trailer || movie.trailerLink} target='_blank' rel='noreferrer'>
-      <img src={`https://api.nomoreparties.co${movie.image.url}`} className='movie__image' alt='Промо'/>
+      <a className='movie__link' href={movie.trailerLink} target='_blank' rel='noreferrer'>
+        <img src={MOVIE_BASE_API+movie.image.url} className='movie__image' alt='Промо' />
       </a>
     </li>
   );

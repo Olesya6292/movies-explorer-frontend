@@ -4,25 +4,23 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 
 export default function MoviesCardList({
   movies,
-  onClick,
-  isSaved = true,
+  onClickAddMovie,
+  onClickDeleteMovie,
+  isSavedMovie = false,
   savedMovies,
 }) {
-
-  function isMovieSave(movie) {
-    return savedMovies.some((savedMovie) => savedMovie.movieId === movie.movieId);
-  }
-
-  return (
+ 
+    return (
     <section className='movies' aria-label='Фильмы'>
       <ul className='movies__list'>
       {movies.map((movie) => (
         <MoviesCard
-          key={movie.id || movie.movieId}
+          key={movie.id}
           movie={movie}
-          isSaved={isSaved}
-          onClick={onClick}
-          isLiked={isMovieSave(movie)}
+          isSavedMovie={isSavedMovie}
+          savedMovies={savedMovies}
+          onClickAddMovie={onClickAddMovie}
+          onClickDeleteMovie={onClickDeleteMovie}
         />))}
       </ul>
     </section>

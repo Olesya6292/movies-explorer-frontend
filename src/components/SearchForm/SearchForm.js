@@ -13,16 +13,17 @@ function SearchForm({ onSearchSubmit, setSearch }) {
     const searchParams = setSearch();
     setSearchRequest(searchParams.searchRequest);
     setChecked(searchParams.checked);
-  }, [setSearch]);
+  }, []);
 
+  
   function handleSearchChange(e) {
     setSearchRequest(e.target.value);
   }
   
-  function handleCheckedChange(value) {
-    setChecked(value);
-    if (localStorage.getItem("searchResult")) {
-      onSearchSubmit(searchRequest, value);
+  function handleCheckedChange(e) {
+    setChecked(e.target.checked);
+    if (localStorage.getItem('searchResult')) {
+      onSearchSubmit(searchRequest, !checked);
     }
   }
 
@@ -58,7 +59,7 @@ function SearchForm({ onSearchSubmit, setSearch }) {
             Найти
           </button>
         </div>
-        <FilterCheckbox onChange={handleCheckedChange}/>
+        <FilterCheckbox checked={checked} onChange={handleCheckedChange}/>
         <span
             className={`form-search__input-error ${
               errorMessage && 'form-search__input-error_active'

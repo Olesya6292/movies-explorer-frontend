@@ -20,6 +20,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
+  const [savedMovies, setSavedMovies] = useState([]);
 
   const navigate = useNavigate();
   //const location = useLocation();
@@ -56,7 +57,7 @@ function App() {
       .register(name, email, password)
       .then((data) => {
         console.log(data);
-        setSuccessMessage('Вы успешно зарегистрировались')
+        setSuccessMessage('Вы успешно зарегистрировались');
         handleLogin(data.email, password);
       })
       .catch((err) => {
@@ -64,8 +65,8 @@ function App() {
         if (err === 'Ошибка: 409') {
           setErrorMessage('Пользователь с таким email уже существует');
         } else {
-        setErrorMessage('При регистрации пользователя произошла ошибка');
-}
+          setErrorMessage('При регистрации пользователя произошла ошибка');
+        }
       });
   }
 
@@ -81,19 +82,22 @@ function App() {
       .catch((err) => {
         console.log(err);
         if (err === 'Ошибка: 401') {
-          setErrorMessage('При авторизации произошла ошибка.Токен не передан или передан не в том формате');
-        }
-        else if (err === 'Ошибка: 400') {
+          setErrorMessage(
+            'При авторизации произошла ошибка.Токен не передан или передан не в том формате'
+          );
+        } else if (err === 'Ошибка: 400') {
           setErrorMessage('Вы ввели неправильный логин или пароль.');
-        }
-        else if (err === 'Ошибка: 404') {
-          setErrorMessage('При авторизации произошла ошибка. Переданный токен некорректен');
+        } else if (err === 'Ошибка: 404') {
+          setErrorMessage(
+            'При авторизации произошла ошибка. Переданный токен некорректен'
+          );
         } else {
-        setErrorMessage('При входе произошла ошибка');}
+          setErrorMessage('При входе произошла ошибка');
+        }
       });
   }
   function handleUpdate(name, email) {
-      mainApi
+    mainApi
       .updateUserInfo(name, email)
       .then((data) => {
         setCurrentUser(data);
@@ -106,8 +110,8 @@ function App() {
         if (err === 'Ошибка: 409') {
           setErrorMessage('Пользователь с таким email уже существует');
         } else {
-        setErrorMessage('При обновлении профиля произошла ошибка');
-      }
+          setErrorMessage('При обновлении профиля произошла ошибка');
+        }
       });
   }
 
@@ -118,18 +122,51 @@ function App() {
     navigate('/');
   }
 
+  
+  function handleClickAddMovie(movie) {
+    mainApi
+      .saveMovie(movie)
+      .then((newMovie) => {
+        setSavedMovies([newMovie, ...savedMovies])})
+      .catch((err) => console.log(err));
+  }
+
+  function handleClickDeleteMovie(movie) {
+    mainApi
+      .deleteMovie(movie._id)
+      .then(() =>
+        setSavedMovies((movie) =>
+          movie.filter((savedMovie) => savedMovie._id !== movie._id)
+        )
+      )
+      .catch((err) => console.log(err));
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <Routes>
         <Route path='/' element={<Main />} />
         <Route
           path='/movies'
-          element={<ProtectedRoute component={Movies} loggedIn={loggedIn} />}
+          element={
+            <ProtectedRoute
+              component={Movies}
+              loggedIn={loggedIn}
+              onClickAddMovie={handleClickAddMovie}
+              onClickDeleteMovie={handleClickDeleteMovie}
+              savedMovies={savedMovies}
+            />
+          }
         />
         <Route
           path='/saved-movies'
           element={
-            <ProtectedRoute component={SavedMovies} loggedIn={loggedIn} />
+            <ProtectedRoute
+              component={SavedMovies}
+              loggedIn={loggedIn}
+              onClickDeleteMovie={handleClickDeleteMovie}
+              savedMovies={savedMovies}
+            />
           }
         />
         <Route
