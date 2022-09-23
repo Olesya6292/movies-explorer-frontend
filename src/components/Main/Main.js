@@ -1,6 +1,5 @@
 import React from 'react';
 import Header from '../Header/Header';
-import SigninNav from '../SigninNav/SigninNav';
 import Promo from '../Promo/Promo';
 import AboutProject from '../AboutProject/AboutProject';
 import Techs from '../Techs/Techs';
@@ -13,9 +12,7 @@ import './Main.css';
 function Main() {
   return (
     <>
-      <Header isTheme={true}>
-        <SigninNav />
-      </Header>
+      <Header isTheme={true} />
       <main>
         <Promo />
         <AboutProject />

@@ -30,9 +30,9 @@ function App() {
     if (token) {
       auth
         .checkToken(token)
-        .then(() => {
+        .then((res) => {
           setLoggedIn(true);
-          navigate('/movies');
+          setCurrentUser(res);
         })
         .catch((err) => {
           console.log(err);
@@ -49,8 +49,17 @@ function App() {
           setLoggedIn(true);
         })
         .catch((err) => console.log(err));
-    }
+    mainApi
+      .getSavedMovies()
+      .then((res) => {
+        setSavedMovies(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });}
   }, [loggedIn]);
+
+  
 
   function handleRegister(name, email, password) {
     auth
@@ -123,27 +132,37 @@ function App() {
   }
 
   
-  function handleClickAddMovie(movie) {
+  const handleSaveMovie = (movie) => {
     mainApi
       .saveMovie(movie)
-      .then((newMovie) => {
-        setSavedMovies([newMovie, ...savedMovies])})
-      .catch((err) => console.log(err));
-  }
+      .then((data) => {
+        setSavedMovies([data, ...savedMovies]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
-  function handleClickDeleteMovie(movie) {
+  const handleDeleteMovie = (movie) => {
+    const savedMovie = savedMovies.find(
+      (item) => item.movieId === movie.movieId
+    );
     mainApi
-      .deleteMovie(movie._id)
-      .then(() =>
-        setSavedMovies((movie) =>
-          movie.filter((savedMovie) => savedMovie._id !== movie._id)
-        )
-      )
-      .catch((err) => console.log(err));
+      .deleteMovie(savedMovie._id)
+      .then(() => {
+        const newMoviesList = savedMovies.filter(
+          (item) => item._id !== savedMovie._id
+        );
+        setSavedMovies(newMoviesList);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
+      <div className="content">
       <Routes>
         <Route path='/' element={<Main />} />
         <Route
@@ -152,8 +171,8 @@ function App() {
             <ProtectedRoute
               component={Movies}
               loggedIn={loggedIn}
-              onClickAddMovie={handleClickAddMovie}
-              onClickDeleteMovie={handleClickDeleteMovie}
+              onClickAddMovie={handleSaveMovie}
+              onClickDeleteMovie={handleDeleteMovie}
               savedMovies={savedMovies}
             />
           }
@@ -164,7 +183,8 @@ function App() {
             <ProtectedRoute
               component={SavedMovies}
               loggedIn={loggedIn}
-              onClickDeleteMovie={handleClickDeleteMovie}
+              onClickAddMovie={handleSaveMovie}
+              onClickDeleteMovie={handleDeleteMovie}
               savedMovies={savedMovies}
             />
           }
@@ -198,6 +218,7 @@ function App() {
         />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
+      </div>
     </CurrentUserContext.Provider>
   );
 }

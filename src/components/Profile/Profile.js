@@ -2,7 +2,6 @@ import React from 'react';
 import { useEffect, useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Header from '../Header/Header';
-import Navigation from '../Navigation/Navigation';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
@@ -36,9 +35,7 @@ function Profile({ onUpdate, errorMessage, successMessage, onLogout }) {
 
   return (
     <>
-      <Header>
-        <Navigation />
-      </Header>
+      <Header />
       <section className='profile'>
         <div className='profile__content'>
           <h1 className='profile__title'>{`Привет, ${currentUser.name}!`}</h1>

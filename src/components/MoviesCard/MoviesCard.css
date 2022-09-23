@@ -64,5 +64,9 @@
   opacity: 0.8;
 }
 .movie__image {
-  width: 364px;
+  aspect-ratio: 16/9;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
 }

@@ -1,15 +1,21 @@
 import React from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import './Header.css';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import logo from '../../image/logo.svg';
+import Navigation from '../Navigation/Navigation';
+import SigninNav from '../SigninNav/SigninNav';
 
-function Header({ children, isTheme }) {
+import './Header.css';
+
+function Header({ isTheme }) {
+  const currentUser = useContext(CurrentUserContext);
   return (
     <header className={`header ${isTheme && 'header__theme'}`}>
       <Link to='/' className='header__logo-link'>
         <img className='header__logo' src={logo} alt='Лого' />
       </Link>
-      {children}
+      {currentUser ? <Navigation isTheme={isTheme} isThemed={isTheme}/> : <SigninNav />}
     </header>
   );
 }

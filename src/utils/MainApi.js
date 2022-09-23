@@ -39,7 +39,19 @@ export const saveMovie = (movie) => {
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${localStorage.getItem('token')}`,
     },
-    body: JSON.stringify(movie),
+    body: JSON.stringify({
+      country: movie.country,
+        director: movie.director,
+        duration: movie.duration,
+        year: movie.year,
+        description: movie.description,
+        image: `https://api.nomoreparties.co${movie.image.url}`,
+        trailerLink: movie.trailerLink,
+        thumbnail: `https://api.nomoreparties.co${movie.image.formats.thumbnail.url}`,
+        movieId: movie.id.toString(),
+        nameRU: movie.nameRU,
+        nameEN: movie.nameEN,
+    }),
   }).then(handleResponse);
 };
 

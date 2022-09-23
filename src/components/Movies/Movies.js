@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../Header/Header';
-import Navigation from '../Navigation/Navigation';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
 import Preloader from '../Preloader/Preloader';
 import * as moviesApi from '../../utils/MoviesApi';
 import { filterMovies } from '../../utils/filterMovies';
-import { MOVIE_BASE_API } from '../../utils/constants';
 
 import './Movies.css';
 
@@ -24,34 +22,14 @@ function Movies({ onClickAddMovie, onClickDeleteMovie, savedMovies }) {
 
   function getAllMovies() {
     return moviesApi
-      .getAllMovies()
-      .then((data) => {
-        data.map((item) => {
-          const imageUrl = item.image && item.image.url;
-          const thumbnailUrl = item.image && item.image.formats.thumbnail.url;
-
-          return {
-            country: item.country || 'Unknown',
-            director: item.director || 'Unknown',
-            duration: item.duration || -1,
-            year: item.year || 'Unknown',
-            description: item.description || 'Unknown',
-            image:  imageUrl ? MOVIE_BASE_API + imageUrl : 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png',
-            trailerLink: item.trailerLink
-              ? item.trailerLink
-              : 'https://youtu.be/404',
-            thumbnail: thumbnailUrl
-              ? MOVIE_BASE_API + thumbnailUrl
-              : 'https://socialistmodernism.com/wp-content/uploads/2017/07/placeholder-image.png',
-            movieId: item.id || -1,
-            nameRU: item.nameRU || 'Unknown',
-            nameEN: item.nameEN || 'Unknown',
-          };
-        });
-        localStorage.setItem('allMovies', JSON.stringify(data));
-      })
-      .catch((err) => console.log(err));
+    .getAllMovies()
+    .then((data) => {
+      localStorage.setItem('allMovies', JSON.stringify(data));
+      return data;
+    })
+    .catch((err) => console.log(err));
   }
+          
   function handleSearchSubmit(searchRequest, checked) {
     setIsLoading(true);
     setErrorMessage('');
@@ -100,9 +78,7 @@ function Movies({ onClickAddMovie, onClickDeleteMovie, savedMovies }) {
 
    return (
     <>
-      <Header>
-        <Navigation />
-      </Header>
+      <Header />
       <main>
         <SearchForm onSearchSubmit={handleSearchSubmit} setSearch={setSearch} />
         <Preloader isActive={isLoading} />
@@ -113,9 +89,6 @@ function Movies({ onClickAddMovie, onClickDeleteMovie, savedMovies }) {
           onClickAddMovie={onClickAddMovie}
           onClickDeleteMovie={onClickDeleteMovie}
         />
-        <button type='button' className='movies__btn-next'>
-          Ещё
-        </button>
       </main>
       <Footer />
     </>
