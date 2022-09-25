@@ -33,7 +33,7 @@
   `https://api.diploma.ionova.nomoredomains.sbs`
 - публичное API для получения коллекции фильмов BeatFilm `https://api.nomoreparties.co/beatfilm-movies`
 
-## Используемые ехнологии
+## Используемые технологии
 
   - HTML5, CSS3, БЭМ
   - JSX
