@@ -15,7 +15,7 @@ function Header({ isTheme }) {
       <Link to='/' className='header__logo-link'>
         <img className='header__logo' src={logo} alt='Лого' />
       </Link>
-      {currentUser ? <Navigation isTheme={isTheme} isThemed={isTheme}/> : <SigninNav />}
+      {currentUser ? <Navigation isTheme={isTheme} /> : <SigninNav />}
     </header>
   );
 }

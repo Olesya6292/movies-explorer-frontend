@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import logo from '../../image/logo.svg';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
 import './Login.css';
 
-function Login({ onLogin, errorMessage }) {
-
+function Login({ onLogin, errorMessage, isLoading }) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormAndValidation();
 
@@ -20,6 +20,12 @@ function Login({ onLogin, errorMessage }) {
   useEffect(() => {
     resetForm();
   }, [resetForm]);
+
+  const currentUser = useContext(CurrentUserContext);
+
+  if (currentUser) {
+    return <Navigate to='/movies' />;
+  }
 
   return (
     <section className='content__login'>
@@ -39,6 +45,8 @@ function Login({ onLogin, errorMessage }) {
             placeholder=''
             value={values.email ?? ''}
             onChange={handleChange}
+            disabled={isLoading}
+            pattern='[^@\s]+@[^@\s]+\.[^@\s]+'
             required
           ></input>
           <span
@@ -58,6 +66,7 @@ function Login({ onLogin, errorMessage }) {
             placeholder=''
             value={values.password ?? ''}
             onChange={handleChange}
+            disabled={isLoading}
             required
           ></input>
           <span
@@ -75,7 +84,9 @@ function Login({ onLogin, errorMessage }) {
             {errorMessage}
           </span>
           <button
-            className={`login__button ${!isValid && 'login__button_disabled'}`}
+            className={`login__button ${
+              (!isValid || isLoading) && 'login__button_disabled'
+            }`}
             type='submit'
           >
             Войти

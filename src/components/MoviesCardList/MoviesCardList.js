@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
+import { WIDTH_SCREEN, COUNT_CARD } from '../../utils/constants';
 
 export default function MoviesCardList({
   movies,
@@ -9,45 +10,57 @@ export default function MoviesCardList({
   isSavedMovie = false,
   savedMovies,
 }) {
-
-  const [count, setCount] = React.useState(getInitialCount());
+  const [count, setCount] = useState(getInitialCount());
   const handleMoreClick = () => setCount(count + getMoreCount());
-  const renderMovies = movies.slice(0, count); 
+  const renderMovies = movies.slice(0, count);
 
-function getScreenWidth() {
-    return Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0);
+  function getScreenWidth() {
+    return Math.max(
+      document.documentElement.clientWidth || 0,
+      window.innerWidth || 0
+    );
   }
 
-function getInitialCount() {
+  function getInitialCount() {
     const screenWidth = getScreenWidth();
-    if (screenWidth < 720) return 5;
-    if (screenWidth < 890) return 8;
-    return 12;
+    if (screenWidth < WIDTH_SCREEN.WIDTH_SCREEN_MIN)
+      return COUNT_CARD.INITIAL_CARD_MIN;
+    if (screenWidth < WIDTH_SCREEN.WIDTH_SCREEN_MEDIUM)
+      return COUNT_CARD.INITIAL_CARD_MEDIUM;
+    return COUNT_CARD.INITIAL_CARD_DEFAULT;
   }
-  
-function getMoreCount() {
+
+  function getMoreCount() {
     const screenWidth = getScreenWidth();
-    if (screenWidth <= 720) return 1;
-    if (screenWidth <= 890) return 2;
-    if (screenWidth <= 1140) return 3;
-    return 4;
+    if (screenWidth <= WIDTH_SCREEN.WIDTH_SCREEN_MIN)
+      return COUNT_CARD.MORE_CARD_MIN;
+    if (screenWidth <= WIDTH_SCREEN.WIDTH_SCREEN_MEDIUM)
+      return COUNT_CARD.MORE_CARD_MEDIUM;
+    if (screenWidth <= WIDTH_SCREEN.WIDTH_SCREEN_MAX)
+      return COUNT_CARD.MORE_CARD_MAX;
+    return COUNT_CARD.MORE_CARD_DEFAULT;
   }
- 
-    return (
+
+  return (
     <section className='movies' aria-label='Фильмы'>
       <ul className='movies__list'>
-      {renderMovies.map((movie) => (
-        <MoviesCard
-          key={movie.id || movie._id}
-          movie={movie}
-          isSavedMovie={isSavedMovie}
-          savedMovies={savedMovies}
-          onClickAddMovie={onClickAddMovie}
-          onClickDeleteMovie={onClickDeleteMovie}
-        />))}
+        {renderMovies.map((movie) => (
+          <MoviesCard
+            key={movie.id || movie._id}
+            movie={movie}
+            isSavedMovie={isSavedMovie}
+            savedMovies={savedMovies}
+            onClickAddMovie={onClickAddMovie}
+            onClickDeleteMovie={onClickDeleteMovie}
+          />
+        ))}
       </ul>
       {renderMovies.length < movies.length && (
-    <button type='button' className='movies__btn-next' onClick={handleMoreClick}>
+        <button
+          type='button'
+          className='movies__btn-next'
+          onClick={handleMoreClick}
+        >
           Ещё
         </button>
       )}

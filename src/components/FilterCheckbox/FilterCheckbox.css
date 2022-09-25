@@ -1,7 +1,9 @@
 .checkbox__label{
-  display: flex;
-  justify-content: center;
+  display: block;
+  text-align: center;
+  margin: 0 auto;
   margin-bottom: 39px;
+  max-width: 200px;
 }
 
 .checkbox {
@@ -19,7 +21,7 @@
   height: 20px;
   background: #EBEBEB;
   border-radius: 20px;
-
+  cursor: pointer;
 }
 
 .checkbox__circle {

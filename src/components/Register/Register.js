@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import logo from '../../image/logo.svg';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { useFormAndValidation } from '../../hooks/useFormAndValidation';
 
 import './Register.css';
 
-function Register({ onRegister, errorMessage, successMessage }) {
-  
+function Register({ onRegister, errorMessage, successMessage, isLoading }) {
   const { values, handleChange, errors, isValid, resetForm } =
     useFormAndValidation();
 
@@ -20,6 +20,12 @@ function Register({ onRegister, errorMessage, successMessage }) {
   useEffect(() => {
     resetForm();
   }, [resetForm]);
+
+  const currentUser = useContext(CurrentUserContext);
+
+  if (currentUser) {
+    return <Navigate to='/movies' />;
+  }
 
   return (
     <section className='content__register'>
@@ -40,6 +46,7 @@ function Register({ onRegister, errorMessage, successMessage }) {
             value={values.name ?? ''}
             onChange={handleChange}
             required
+            disabled={isLoading}
             minLength={2}
             maxLength={30}
           ></input>
@@ -60,6 +67,8 @@ function Register({ onRegister, errorMessage, successMessage }) {
             placeholder=''
             value={values.email ?? ''}
             onChange={handleChange}
+            disabled={isLoading}
+            pattern='[^@\s]+@[^@\s]+\.[^@\s]+'
             required
           ></input>
           <span
@@ -79,6 +88,7 @@ function Register({ onRegister, errorMessage, successMessage }) {
             placeholder=''
             value={values.password ?? ''}
             onChange={handleChange}
+            disabled={isLoading}
             required
           ></input>
           <span
@@ -100,11 +110,11 @@ function Register({ onRegister, errorMessage, successMessage }) {
               successMessage && 'register__message_type_success'
             }`}
           >
-            {successMessage}
+            Вы успешно зарегистрировались
           </span>
           <button
             className={`register__button-reg ${
-              !isValid && 'register__button-reg_disabled'
+              (!isValid || isLoading) && 'register__button-reg_disabled'
             }`}
             type='submit'
           >

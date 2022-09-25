@@ -1,13 +1,15 @@
+import { SEARCH_PARAMS } from '../utils/constants';
+
 export function filterMovies(data, searchRequest, checked) {
-    function isFilter(movie) {
-      if (
-        movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase()) &&
-        ((checked && movie.duration <= 40) || !checked)
-      ) {
-        return true;
-      }
-      return false;
+  function isFilter(movie) {
+    if (
+      movie.nameRU.toLowerCase().includes(searchRequest.toLowerCase()) &&
+      ((checked && movie.duration <= SEARCH_PARAMS.SHORT_DURATION) || !checked)
+    ) {
+      return true;
     }
-    const result = data.filter(isFilter);
-    return result;
+    return false;
   }
+  const result = data.filter(isFilter);
+  return result;
+}

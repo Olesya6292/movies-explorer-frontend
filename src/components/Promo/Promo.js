@@ -2,7 +2,7 @@ import React from 'react';
 import './Promo.css';
 import landingLogo from '../../image/landing-logo.svg';
 
- function Promo() {
+function Promo() {
   return (
     <section className='title'>
       <h1 className='title__header'>

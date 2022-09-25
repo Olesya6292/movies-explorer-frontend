@@ -7,14 +7,18 @@ function AboutProject() {
       <h3 className='content__title'>О проекте</h3>
       <ul className='about__info'>
         <li className='about__info-stage'>
-          <h4 className='about__info-title'>Дипломный проект включал 5 этапов</h4>
+          <h4 className='about__info-title'>
+            Дипломный проект включал 5 этапов
+          </h4>
           <p className='about__info-text'>
             Составление плана, работу над бэкендом, вёрстку, добавление
             функциональности и финальные доработки.
           </p>
         </li>
         <li className='about__info-stage'>
-          <h4 className='about__info-title'>На выполнение диплома ушло 5 недель</h4>
+          <h4 className='about__info-title'>
+            На выполнение диплома ушло 5 недель
+          </h4>
           <p className='about__info-text'>
             У каждого этапа был мягкий и жёсткий дедлайн, которые нужно было
             соблюдать, чтобы успешно защититься.

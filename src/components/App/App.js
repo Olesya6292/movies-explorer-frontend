@@ -10,20 +10,41 @@ import Register from '../Register/Register';
 import Movies from '../Movies/Movies';
 import Profile from '../Profile/Profile';
 import SavedMovies from '../SavedMovies/SavedMovies';
+import { ERRORS, REQUEST_ERRORS } from '../../utils/constants';
 import * as mainApi from '../../utils/MainApi';
 import * as auth from '../../utils/Auth';
 
 import './App.css';
 
 function App() {
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
   const [loggedIn, setLoggedIn] = useState(false);
+  const [savedMovies, setSavedMovies] = useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState(false);
-  const [savedMovies, setSavedMovies] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
-  //const location = useLocation();
+
+  useEffect(() => {
+    if (loggedIn) {
+      mainApi
+        .getUserInfo()
+        .then((res) => {
+          setCurrentUser(res);
+          setLoggedIn(true);
+        })
+        .catch((err) => console.log(err));
+      mainApi
+        .getSavedMovies()
+        .then((res) => {
+          setSavedMovies(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -40,98 +61,64 @@ function App() {
     }
   }, []);
 
-  useEffect(() => {
-    if (loggedIn) {
-      mainApi
-        .getUserInfo()
-        .then((res) => {
-          setCurrentUser(res);
-          setLoggedIn(true);
-        })
-        .catch((err) => console.log(err));
-    mainApi
-      .getSavedMovies()
-      .then((res) => {
-        setSavedMovies(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });}
-  }, [loggedIn]);
-
-  
-
   function handleRegister(name, email, password) {
+    setIsLoading(true);
+    setErrorMessage('');
+    setSuccessMessage(false);
     auth
       .register(name, email, password)
       .then((data) => {
-        console.log(data);
-        setSuccessMessage('Вы успешно зарегистрировались');
+        setIsLoading(false);
+        setSuccessMessage(true);
+        setTimeout(() => setSuccessMessage(false), 2000);
         handleLogin(data.email, password);
       })
       .catch((err) => {
         console.log(err);
-        if (err === 'Ошибка: 409') {
-          setErrorMessage('Пользователь с таким email уже существует');
+        if (err === ERRORS.CONFLICT) {
+          setErrorMessage(REQUEST_ERRORS.REGISTER_409);
         } else {
-          setErrorMessage('При регистрации пользователя произошла ошибка');
+          setErrorMessage(REQUEST_ERRORS.REGISTER_DEFAULT);
         }
+        setIsLoading(false);
       });
   }
 
   function handleLogin(email, password) {
+    setIsLoading(true);
+    setErrorMessage('');
     auth
       .login(email, password)
       .then((res) => {
         localStorage.setItem('token', res.token);
+        setIsLoading(false);
         setCurrentUser(res);
         setLoggedIn(true);
         navigate('/movies');
       })
       .catch((err) => {
-        console.log(err);
-        if (err === 'Ошибка: 401') {
-          setErrorMessage(
-            'При авторизации произошла ошибка.Токен не передан или передан не в том формате'
-          );
-        } else if (err === 'Ошибка: 400') {
-          setErrorMessage('Вы ввели неправильный логин или пароль.');
-        } else if (err === 'Ошибка: 404') {
-          setErrorMessage(
-            'При авторизации произошла ошибка. Переданный токен некорректен'
-          );
+        if (err === ERRORS.UNAUTHORIZED) {
+          setErrorMessage(REQUEST_ERRORS.LOGIN_401);
+        } else if (err === ERRORS.SERVER) {
+          setErrorMessage(REQUEST_ERRORS.SERVER_500);
         } else {
-          setErrorMessage('При входе произошла ошибка');
+          setErrorMessage(REQUEST_ERRORS.LOGIN_DEFAULT);
         }
+        setIsLoading(false);
       });
   }
-  function handleUpdate(name, email) {
-    mainApi
-      .updateUserInfo(name, email)
-      .then((data) => {
-        setCurrentUser(data);
-        setSuccessMessage(true);
-        setErrorMessage('');
-      })
-      .catch((err) => {
-        console.log(err);
-        setSuccessMessage(false);
-        if (err === 'Ошибка: 409') {
-          setErrorMessage('Пользователь с таким email уже существует');
-        } else {
-          setErrorMessage('При обновлении профиля произошла ошибка');
-        }
-      });
+
+  function handleUpdate(data) {
+    setCurrentUser(data);
   }
 
   function signOut() {
     setLoggedIn(false);
-    setCurrentUser({});
+    setCurrentUser(null);
     localStorage.clear();
     navigate('/');
   }
 
-  
   const handleSaveMovie = (movie) => {
     mainApi
       .saveMovie(movie)
@@ -158,66 +145,68 @@ function App() {
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="content">
-      <Routes>
-        <Route path='/' element={<Main />} />
-        <Route
-          path='/movies'
-          element={
-            <ProtectedRoute
-              component={Movies}
-              loggedIn={loggedIn}
-              onClickAddMovie={handleSaveMovie}
-              onClickDeleteMovie={handleDeleteMovie}
-              savedMovies={savedMovies}
-            />
-          }
-        />
-        <Route
-          path='/saved-movies'
-          element={
-            <ProtectedRoute
-              component={SavedMovies}
-              loggedIn={loggedIn}
-              onClickAddMovie={handleSaveMovie}
-              onClickDeleteMovie={handleDeleteMovie}
-              savedMovies={savedMovies}
-            />
-          }
-        />
-        <Route
-          path='/profile'
-          element={
-            <ProtectedRoute
-              component={Profile}
-              loggedIn={loggedIn}
-              onUpdate={handleUpdate}
-              errorMessage={errorMessage}
-              successMessage={successMessage}
-              onLogout={signOut}
-            />
-          }
-        />
-        <Route
-          path='/signin'
-          element={<Login onLogin={handleLogin} errorMessage={errorMessage} />}
-        />
-        <Route
-          path='/signup'
-          element={
-            <Register
-              onRegister={handleRegister}
-              errorMessage={errorMessage}
-              successMessage={successMessage}
-            />
-          }
-        />
-        <Route path='*' element={<PageNotFound />} />
-      </Routes>
+      <div className='content'>
+        <Routes>
+          <Route path='/' element={<Main />} />
+          <Route
+            path='/movies'
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <Movies
+                  onClickAddMovie={handleSaveMovie}
+                  onClickDeleteMovie={handleDeleteMovie}
+                  savedMovies={savedMovies}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/saved-movies'
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <SavedMovies
+                  onClickAddMovie={handleSaveMovie}
+                  onClickDeleteMovie={handleDeleteMovie}
+                  savedMovies={savedMovies}
+                />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/profile'
+            element={
+              <ProtectedRoute loggedIn={loggedIn}>
+                <Profile onUpdate={handleUpdate} onLogout={signOut} />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path='/signin'
+            element={
+              <Login
+                onLogin={handleLogin}
+                errorMessage={errorMessage}
+                isLoading={isLoading}
+              />
+            }
+          />
+          <Route
+            path='/signup'
+            element={
+              <Register
+                onRegister={handleRegister}
+                errorMessage={errorMessage}
+                successMessage={successMessage}
+                isLoading={isLoading}
+              />
+            }
+          />
+          <Route path='*' element={<PageNotFound />} />
+        </Routes>
       </div>
     </CurrentUserContext.Provider>
   );

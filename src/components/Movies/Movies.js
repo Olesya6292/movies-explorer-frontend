@@ -3,33 +3,34 @@ import Header from '../Header/Header';
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Footer from '../Footer/Footer';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 import Preloader from '../Preloader/Preloader';
 import * as moviesApi from '../../utils/MoviesApi';
 import { filterMovies } from '../../utils/filterMovies';
+import { useLocalStorage } from '../../hooks/useLocalStorage';
+import { SEARCH_ERRORS } from '../../utils/constants';
 
 import './Movies.css';
 
 function Movies({ onClickAddMovie, onClickDeleteMovie, savedMovies }) {
-  const [searchResult, setSearchResult] = useState(
-    JSON.parse(localStorage.getItem('searchResult')) || []
-  );
+  const [searchResult, setSearchResult] = useLocalStorage('searchResult', []);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     setSearchResult(searchResult);
-  }, [searchResult]);
+  }, [searchResult, setSearchResult]);
 
   function getAllMovies() {
     return moviesApi
-    .getAllMovies()
-    .then((data) => {
-      localStorage.setItem('allMovies', JSON.stringify(data));
-      return data;
-    })
-    .catch((err) => console.log(err));
+      .getAllMovies()
+      .then((data) => {
+        localStorage.setItem('allMovies', JSON.stringify(data));
+        return data;
+      })
+      .catch((err) => console.log(err));
   }
-          
+
   function handleSearchSubmit(searchRequest, checked) {
     setIsLoading(true);
     setErrorMessage('');
@@ -51,9 +52,7 @@ function Movies({ onClickAddMovie, onClickDeleteMovie, savedMovies }) {
       })
       .catch(() => {
         setIsLoading(false);
-        setErrorMessage(
-          'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
-        );
+        setErrorMessage(SEARCH_ERRORS.NOT_GET_MOVIES);
       });
   }
 
@@ -75,20 +74,25 @@ function Movies({ onClickAddMovie, onClickDeleteMovie, savedMovies }) {
       checked: localStorage.getItem('checked') === 'true' || false,
     };
   }
-
-   return (
+  return (
     <>
       <Header />
       <main>
         <SearchForm onSearchSubmit={handleSearchSubmit} setSearch={setSearch} />
-        <Preloader isActive={isLoading} />
-        {errorMessage}
-        <MoviesCardList
-          movies={searchResult}
-          savedMovies={savedMovies}
-          onClickAddMovie={onClickAddMovie}
-          onClickDeleteMovie={onClickDeleteMovie}
-        />
+        {errorMessage ? (
+          <ErrorMessage text={errorMessage} />
+        ) : isLoading ? (
+          <Preloader />
+        ) : searchResult.length === 0 ? (
+          <ErrorMessage text={SEARCH_ERRORS.NOT_FOUND} />
+        ) : (
+          <MoviesCardList
+            movies={searchResult}
+            savedMovies={savedMovies}
+            onClickAddMovie={onClickAddMovie}
+            onClickDeleteMovie={onClickDeleteMovie}
+          />
+        )}
       </main>
       <Footer />
     </>

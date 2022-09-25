@@ -1,11 +1,33 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import './MenuPopup.css';
 
 function MenuPopup({ isOpen, onClose }) {
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleEscClose = (e) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleEscClose);
+    return () => {
+      document.removeEventListener('keydown', handleEscClose);
+    };
+  }, [isOpen, onClose]);
+
+  const handleOverlayClose = (e) => {
+    if (e.target === e.currentTarget && isOpen) {
+      onClose();
+    }
+  };
+
   return (
-    <div className={`popup ${isOpen && 'popup_opened'}`}>
+    <div
+      className={`popup ${isOpen && 'popup_opened'}`}
+      onClick={handleOverlayClose}
+    >
       <div className='popup__container'>
         <button
           className='popup__close'
