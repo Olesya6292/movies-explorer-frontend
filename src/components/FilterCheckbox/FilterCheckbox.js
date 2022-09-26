@@ -1,23 +1,22 @@
 import React from 'react';
-import { useState } from 'react';
 
 import './FilterCheckbox.css';
 
-function FilterCheckbox() {
-
-  const [isChecked, setIsChecked] = useState(false);
- 
-  function onClickCheck() {
-    setIsChecked(!isChecked);
-  };
+function FilterCheckbox({ checked, onChange }) {
   return (
-        <div className="checkbox">
-          <div className={`checkbox__body ${isChecked && 'checkbox__body_active' }`} onClick={onClickCheck}>
-            <input id="checkbox" type="checkbox"/>
-            <div className={`checkbox__indicator ${isChecked && 'checkbox__indicator_active' }`}/>
-          </div>
-          <label htmlFor="checkbox" className="checkbox__label">Короткометражки</label>
-        </div>
+    <label htmlFor='checkbox' className='checkbox__label'>
+      <input
+        id='checkbox'
+        type='checkbox'
+        className='checkbox'
+        checked={checked}
+        onChange={onChange}
+      ></input>
+      <span className='checkbox__body'>
+        <span className='checkbox__circle'></span>
+      </span>
+      <span className='checkbox__title'>Короткометражки</span>
+    </label>
   );
 }
 

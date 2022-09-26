@@ -76,6 +76,35 @@
   margin-bottom: 0px;
 }
 
+.login__input_type_error {
+  color: #FF3055;
+}
+
+.login__input-error {
+  font-size: 10px;
+  line-height: 1.2;
+  color: #FF3055;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  opacity: 0;
+}
+
+.login__input-error_active {
+  opacity: 1;
+}
+
+.login__message {
+font-size: 11px;
+line-height: 1.18;
+margin: 0 auto 20px;
+visibility: hidden;
+}
+
+.login__message_type_error {
+visibility: visible;
+color: #FF3055;
+}
+
 .login__button {
   padding: 0;
   margin-top: 221px;
@@ -93,6 +122,16 @@
 
 .login__button:hover {
   opacity: 0.8;
+}
+
+.login__button_disabled {
+  color: #c2c2c2;
+  background-color: #f8f8f8;
+  cursor: not-allowed;
+}
+
+.login__button_disabled:hover {
+  opacity: 1;
 }
 
 .login__to-reg {

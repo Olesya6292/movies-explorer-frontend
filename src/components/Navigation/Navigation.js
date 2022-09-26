@@ -5,7 +5,7 @@ import MenuPopup from '../MenuPopup/MenuPopup';
 
 import './Navigation.css';
 
-function Navigation() {
+function Navigation({ isTheme }) {
   const setActive = ({ isActive }) =>
     isActive
       ? 'header__main-link header__main-link_active'
@@ -25,12 +25,26 @@ function Navigation() {
       <nav className='header__main-content'>
         <ul className='header__main-links'>
           <li>
-            <NavLink to='/movies' className={setActive}>
+            <NavLink
+              to='/movies'
+              className={
+                isTheme
+                  ? 'header__main-link header__main-link_theme'
+                  : setActive
+              }
+            >
               Фильмы
             </NavLink>
           </li>
           <li>
-            <NavLink to='/saved-movies' className={setActive}>
+            <NavLink
+              to='/saved-movies'
+              className={
+                isTheme
+                  ? 'header__main-link header__main-link_theme'
+                  : setActive
+              }
+            >
               Сохранённые фильмы
             </NavLink>
           </li>
@@ -39,7 +53,11 @@ function Navigation() {
           Аккаунт
         </Link>
         <button
-          className='header__mobile-button'
+          className={
+            isTheme
+              ? 'header__mobile-button header__mobile-button_theme'
+              : 'header__mobile-button'
+          }
           type='button'
           onClick={handleMenuClick}
         ></button>

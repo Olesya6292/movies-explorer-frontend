@@ -1,6 +1,9 @@
 .footer {
   padding: 60px 70px 20px 70px;
 }
+.footer__page{
+margin-top: auto;
+}
 .footer__title {
   margin: 0;
   font-weight: 400;

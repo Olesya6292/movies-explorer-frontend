@@ -33,6 +33,9 @@
   font-weight: 500;
 }
 
+.header__main-link_theme {
+  color: #fff;
+}
 .header__main-account {
   font-weight: 500;
   cursor: pointer;
@@ -84,6 +87,10 @@
     padding: 0;
     opacity: 1;
     transition: opacity 0.8s linear;
+  }
+
+  .header__mobile-button_theme{
+    background-color: #073042;
   }
 
   .header__mobile-button:hover {
