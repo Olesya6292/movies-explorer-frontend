@@ -79,20 +79,21 @@ function Movies({ onClickAddMovie, onClickDeleteMovie, savedMovies }) {
       <Header />
       <main>
         <SearchForm onSearchSubmit={handleSearchSubmit} setSearch={setSearch} />
-        {errorMessage ? (
-          <ErrorMessage text={errorMessage} />
-        ) : isLoading ? (
-          <Preloader />
-        ) : searchResult.length === 0 ? (
-          <ErrorMessage text={SEARCH_ERRORS.NOT_FOUND} />
-        ) : (
-          <MoviesCardList
-            movies={searchResult}
-            savedMovies={savedMovies}
-            onClickAddMovie={onClickAddMovie}
-            onClickDeleteMovie={onClickDeleteMovie}
-          />
-        )}
+        {localStorage.getItem('searchRequest') &&
+          (errorMessage ? (
+            <ErrorMessage text={errorMessage} />
+          ) : isLoading ? (
+            <Preloader />
+          ) : searchResult.length === 0 ? (
+            <ErrorMessage text={SEARCH_ERRORS.NOT_FOUND} />
+          ) : (
+            <MoviesCardList
+              movies={searchResult}
+              savedMovies={savedMovies}
+              onClickAddMovie={onClickAddMovie}
+              onClickDeleteMovie={onClickDeleteMovie}
+            />
+          ))}
       </main>
       <Footer />
     </>

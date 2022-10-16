@@ -29,6 +29,5 @@ export const checkToken = (token) => {
       Authorization: `Bearer ${token}`,
     },
   })
-    .then(handleResponse)
-    .then((res) => res);
+    .then(handleResponse);
 };
