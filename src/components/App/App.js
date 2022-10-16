@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import React from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import Main from '../Main/Main';
@@ -25,7 +25,25 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      auth
+        .checkToken(token)
+        .then((res) => {
+          setLoggedIn(true);
+          setCurrentUser(res);
+          navigate(location.pathname);
+        })
+        .catch((err) => {
+          signOut();
+          console.log(err);
+        });
+    }
+  }, []); 
+  
   useEffect(() => {
     if (loggedIn) {
       mainApi
@@ -41,25 +59,13 @@ function App() {
           setSavedMovies(res);
         })
         .catch((err) => {
+          
           console.log(err);
         });
     }
   }, [loggedIn]);
 
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      auth
-        .checkToken(token)
-        .then((res) => {
-          setLoggedIn(true);
-          setCurrentUser(res);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
-  }, []);
+ 
 
   function handleRegister(name, email, password) {
     setIsLoading(true);
