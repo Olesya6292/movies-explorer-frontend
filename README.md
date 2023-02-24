@@ -17,7 +17,7 @@
 
 ## Демо
 
-Яндекс.Облако: [`diploma.ionova.nomoredomains.sbs`](https://diploma.ionova.nomoredomains.sbs)
+ [GitHub Pages](https://olesya6292.github.io/movies-explorer-frontend/)
 
 ## Макет в Figma
 
@@ -30,7 +30,7 @@
 ## Используемые API
 
 - собственное API для регистрации/авторизации и хранения сохраненных фильмов:
-  `https://api.diploma.ionova.nomoredomains.sbs`
+  `https://movies-explorer-api-pra8.onrender.com`
 - публичное API для получения коллекции фильмов BeatFilm `https://api.nomoreparties.co/beatfilm-movies`
 
 ## Используемые технологии
