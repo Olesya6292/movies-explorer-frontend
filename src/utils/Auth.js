@@ -3,6 +3,7 @@ import handleResponse from './handleResponse';
 
 export const register = (name, email, password) => {
   return fetch(`${BASE_URL}/signup`, {
+    mode: 'no-cors',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -13,6 +14,7 @@ export const register = (name, email, password) => {
 
 export const login = (email, password) => {
   return fetch(`${BASE_URL}/signin`, {
+    mode: 'no-cors',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
