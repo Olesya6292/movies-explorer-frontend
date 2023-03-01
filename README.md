@@ -48,7 +48,7 @@
 ### Инструкция по развертыванию проекта:
 ```bash
 # клонирование репозитория
-$ git clone https://github.com/Olesya6292/react-mesto-api-full.git
+$ git clone https://github.com/Olesya6292/movies-explorer-frontend.git
 
 # установка зависимостей
 $ npm install
