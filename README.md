@@ -23,9 +23,6 @@
 
 [`figma.com/file/JPknfU9WhgZTpPvlMSmKZD/Diploma-(Copy)?node-id=932%3A4182`](<https://www.figma.com/file/JPknfU9WhgZTpPvlMSmKZD/Diploma-(Copy)?node-id=932%3A4182>)
 
-## Пул-реквест для сдачи работы
-
-[github.com/Olesya6292/movies-explorer-frontend/pull/2](https://github.com/Olesya6292/movies-explorer-frontend/pull/2)
 
 ## Используемые API
 
@@ -48,3 +45,13 @@
   - Работа с API
   - Работы с JWT-токеном
 
+### Инструкция по развертыванию проекта:
+```bash
+# клонирование репозитория
+$ git clone https://github.com/Olesya6292/react-mesto-api-full.git
+
+# установка зависимостей
+$ npm install
+
+# запуск сборки фронтенда
+$ npm run start
